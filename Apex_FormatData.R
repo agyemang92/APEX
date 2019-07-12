@@ -1,5 +1,5 @@
 ## APEX Input File Formatting ##
-## 07/11/2019 - ICF ##
+## 07/12/2019 - ICF ##
 ## This script contains 1 function (Format_data) that formats the data for input to Apex ##
 
 #rm(list=ls())

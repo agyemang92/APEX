@@ -1,5 +1,5 @@
 ## APEX Data Management ##
-## 07/11/2019 - ICF ##
+## 07/12/2019 - ICF ##
 ## This script contains four functions (fix_missing_days, fix_small_window, find_dist_to_other_stations, and fix_large_widows) that help to fix missing air quality data ##
 
 #rm(list=ls())
@@ -46,7 +46,7 @@ fix_missing_days = function(air_quality_data,date_start,date_end){
 
 #===============================================================================================================================================
 ## fix_small_window - small window is defined as 1-hour gaps ##
-fix_small_window = function(HourlyData,firsthr,lasthr,n){
+fix_small_window = function(HourlyData,firsthr,lasthr,n,stationID,Date,small_window_fixes,missinghrs){
   
   #small_window_fixes <- data.frame("Row Number" = integer(), "Column Number" = integer(), "Time" = character(),"Date"= character(),"Station ID" = character(), stringsAsFactors = F, check.names = F) #keep track of where replacements are made
   #browser()
@@ -56,17 +56,30 @@ fix_small_window = function(HourlyData,firsthr,lasthr,n){
   firsthrData <-  HourlyData[,firsthr]
   lasthrData  <- HourlyData[,lasthr]
   
-  firsthr <- as.numeric(substr(firsthr,1,unlist(gregexpr(":",firsthr))[1]-1))
-  lasthr <- as.numeric(substr(lasthr,1,unlist(gregexpr(":",lasthr))[1]-1))
-  
-  x <- c(firsthr,lasthr)
-  y <- c(firsthrData,lasthrData)
-  
-  linear <- approx(x,y,method = "linear",n=n)
-  linear_y <- linear$y
-  
-  return(linear_y) #return air quality data and data frame of where fixes were made
-  
+  if (is.na(firsthrData)||is.na(lasthrData)){
+    #browser()
+    small_window_fixes[nrow(small_window_fixes)+1,] <- c(Date,stationID,unlist(toString(missinghrs)),"No. Start or end data points missing.") #note details of replacement
+    #also fix decimal places or replacement data
+    
+    return(rep(NA,n))
+  }else{
+    
+    firsthr <- as.numeric(substr(firsthr,1,unlist(gregexpr(":",firsthr))[1]-1))
+    lasthr <- as.numeric(substr(lasthr,1,unlist(gregexpr(":",lasthr))[1]-1))
+    
+    x <- c(firsthr,lasthr)
+    y <- c(firsthrData,lasthrData)
+    
+    #browser()
+    linear <- approx(x,y,method = "linear",n=n)
+    linear_y <- linear$y
+    linear_y <- sprintf("%.5f",linear_y)
+    
+    small_window_fixes[nrow(small_window_fixes)+1,] <- c(Date,stationID,unlist(toString(missinghrs)),"Yes.") #note details of replacement
+    #also fix decimal places or replacement data
+    
+    return(list("y" = linear_y,"swf" = small_window_fixes)) #return air quality data and data frame of where fixes were made
+  }
 }
 
 #===============================================================================================================================================
@@ -110,18 +123,20 @@ fix_large_window = function(missingdf,dist_to_other_stations,stationID,Date,larg
   
   while(TRUE %in% is.na(missingdf) && reached_end_of_stations=="No"){ #while some data is yet to be replaced and the last of the nearby stations is not reached
     #browser()
-    missingdf_rem <- missingdf[,is.na(missingdf)] #remaining NAs
+    missingdf_rem <- colnames(missingdf)[is.na(missingdf)] #remaining hours with NAs
     #build query criteria for the missing hours to search for
     hr_crit <- ""
-    for (k in colnames(missingdf_rem)){
+    for (k in missingdf_rem){
       hr_crit <- paste0(hr_crit,
                         "(nearby_station_data.`Time Local` = '",k,"'",") or ")
     }
     
     hr_crit <- substr(hr_crit,1,nchar(hr_crit)-4) #remove last "or"
     
-    
+    #browser()
     closest_station <- dist_to_other_stations$StationID[i] #closest station to station of interest with missing data
+    distance <- dist_to_other_stations$Distance_m[i]
+    
     nearby_station_data <- air_quality_data_ChemDateTime[air_quality_data_ChemDateTime$`Station ID`==closest_station & air_quality_data_ChemDateTime$`Date Local`==Date,] #filter the original air quality data that is 
     #filtered only by chemical, data, and time to this station closest to the station of interest missing data
     
@@ -147,8 +162,16 @@ fix_large_window = function(missingdf,dist_to_other_stations,stationID,Date,larg
       nearby_Station_data_by_date_time[1,]<- sprintf("%.5f",nearby_Station_data_by_date_time[1,]) #fix number of digits to 5 
       
       #browser()
-      missingdf[,colnames(missingdf_rem)] <- nearby_Station_data_by_date_time
+      missingdf[,colnames(nearby_Station_data_by_date_time)] <- nearby_Station_data_by_date_time #replace missingdf with hours that were found, any remaining NAs will be fixed in subsequent iteration(s) of this while loop if possible
       found_some_data <- "Yes"
+      
+      
+      #prompt to tell user that "closest_station" of minimum distance "distance" will be used to replace data
+      
+      
+      #browser()
+      large_window_fixes[nrow(large_window_fixes)+1,] <- c(Date,stationID,unlist(toString(colnames(missingdf))),paste0("Yes. Fixed with data from ", closest_station, ", hours ",unlist(toString(colnames(nearby_Station_data_by_date_time))))) #make note
+      
     }
     
     #if after searching no data could be found (because it doesn't exist in any other stations within max distance), then try next closest station
@@ -168,11 +191,7 @@ fix_large_window = function(missingdf,dist_to_other_stations,stationID,Date,larg
   
   if(TRUE %in% is.na(missingdf)){
     #browser()
-    large_window_fixes[nrow(large_window_fixes)+1,] <- c(Date,stationID,paste0("No: ",unlist(toString(colnames(is.na(missingdf)))))) #make note
-  }
-  else{
-    #browser()  
-    large_window_fixes[nrow(large_window_fixes)+1,] <- c(Date,stationID,paste0("Yes: ",unlist(toString(colnames(missingdf))))) #make note
+    large_window_fixes[nrow(large_window_fixes)+1,] <- c(Date,stationID,unlist(toString(colnames(missingdf))),paste0("No. Hour(s) ",unlist(toString(colnames(missingdf)[is.na(missingdf)])), " do(es) not have data in any of the nearby stations within the given max_dist.")) #make note
   }
   
   return(list("mdf" = missingdf,"lwf" = large_window_fixes))
