@@ -1,0 +1,15 @@
+Variable	Value
+file-name-time	"hourly"
+data-year	2010
+Start-date	"2010-01-01"
+End-date	"2010-01-05"
+FIPS-code	"06037"
+FIPS-code	"06059"
+FIPS-code	"06065"
+FIPS-code	"06071"
+FIPS-code	"06073"
+FIPS-code	"06111"
+Chemical	"Ozone"
+MaxFrac		0.2
+MaxD		30739.303
+MaxCumMiss	4
