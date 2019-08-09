@@ -57,25 +57,21 @@ format_and_output_data = function(fixed_air_quality_data,data_sites,date_start,d
   
   
   ## Prepare air district output data ##
-  air_districts_data               <- data_sites[,c("County Code","State Code","Site Number","Latitude","Longitude")] #select relevant columns
+  air_districts_data                <- data_sites[,c("County Code","State Code","Site Number","Latitude","Longitude")] #select relevant columns
    
-  air_districts_data$`State Code`  <- sprintf("%02d",air_districts_data$`State Code`)  # fix state code to 2 characters 
-  air_districts_data$`County Code` <- sprintf("%03d",air_districts_data$`County Code`) # fix county code to 3 characters 
-  air_districts_data$`Site Number` <- sprintf("%05d",air_districts_data$`Site Number`) # fix site number to 5 characters 
-  air_districts_data$Latitude      <- sprintf("%.4f",air_districts_data$Latitude)      # fix lat number to 4 characters
-  air_districts_data$Longitude     <- sprintf("%.4f",air_districts_data$Longitude)     # fix long number to 4 characters
+  air_districts_data$Latitude       <- sprintf("%.4f",air_districts_data$Latitude)      # fix lat number to 4 characters
+  air_districts_data$Longitude      <- sprintf("%.4f",air_districts_data$Longitude)     # fix long number to 4 characters
    
-   
-  air_districts_data$`Station ID`  <- paste0(air_districts_data$`State Code`,air_districts_data$`County Code`,air_districts_data$`Site Number`) #State+County+Site IDs
-  air_districts_data$`Start Date`  <- "" #First year
-  air_districts_data$`End Date`    <- "" #Last year
-  air_districts_data               <- air_districts_data[,c("Station ID","Latitude","Longitude","Start Date","End Date")]                       #final columns
+  air_districts_data$`Station ID`   <- paste0(air_districts_data$`State Code`,air_districts_data$`County Code`,air_districts_data$`Site Number`) #State+County+Site IDs
+  air_districts_data$`Start Date`   <- "" #First year
+  air_districts_data$`End Date`     <- "" #Last year
+  air_districts_data                <- air_districts_data[,c("Station ID","Latitude","Longitude","Start Date","End Date")]                       #final columns
 
 
   ## Loop accross each station and then accross each date to prepare data for export ##
   for (i in 1:length(unique(fixed_air_quality_data$`Station ID`))){                                      #for each station ID
-    #browser()
-    currentStation                            <- unique(fixed_air_quality_data$`Station ID`)[i]                  #current station
+    
+    currentStation                                <- unique(fixed_air_quality_data$`Station ID`)[i]                  #current station
     
     hrly_data_by_county_chem_date_time_filterByStatn <- fixed_air_quality_data[fixed_air_quality_data$`Station ID`==currentStation,] #filter by current station ID
     
@@ -87,13 +83,11 @@ format_and_output_data = function(fixed_air_quality_data,data_sites,date_start,d
     air_districts_data[which(air_districts_data$`Station ID`==currentStation),"End Date"]   <- lastdate    #insert last date into air district output
     
     foreach(j = 1:length(Dates),.packages = c("foreach","dplyr")) %do% { #couldn't get dopar to work as I wanted
-      #for (j in 1:length(Dates)){ #alternative
+      
       currentdate                                            <- Dates[j]                                                                                                                                #current date
       
       hrly_data_by_county_chem_date_time_filterByStatnDate   <- hrly_data_by_county_chem_date_time_filterByStatn[ hrly_data_by_county_chem_date_time_filterByStatn$`Date Local`==currentdate,]          #filter by current date
       hrly_data_by_county_chem_date_time_filterByStatnDate   <- hrly_data_by_county_chem_date_time_filterByStatnDate[,c("Station ID","Date Local","Time Local","Sample Measurement","Parameter Name")]  #relevant cols
-      
-      #hrly_data_by_county_chem_date_time_filterByStatnDate   <- right_join(hrly_data_by_county_chem_date_time_filterByStatnDate,hrly_data_cols,by=c("Time Local"="Colnames"))                           #right join by expected columns to align values in their right columns
       
       hrly_data_by_county_chem_date_time_filterByStatnDate_t <- t(hrly_data_by_county_chem_date_time_filterByStatnDate$`Sample Measurement`)                                                            #transpose data
       
