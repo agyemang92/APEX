@@ -83,6 +83,15 @@ file.name <- paste("hourly",
                                                     %in% user.inputs$Value[user.inputs$Variable=="AQS-chem"]], 
                        user.inputs$Value[user.inputs$Variable=="data-year"], sep = "_")
 
+##User input error handling ##
+if((user.inputs$Value[user.inputs$Variable=="AQS-chem"] %in% criteria_gas_numbers)==FALSE) {
+  stop("Cannot find a corresponding AQS file. Please verify your AQS-chem input.")
+}
+#Provide warning if datasets are likely to be too large.
+if(length(user.inputs$Value[user.inputs$Variable=="data-year"])>2) {
+  warning("Using data sets from more than 2 years may overload processing or memory. If the run fails please try again with less data requested.")
+}
+
 #Download AQS data
 for (i in 1:length(file.name)) {
 download.file(paste0("https://aqs.epa.gov/aqsweb/airdata/",file.name[i], ".zip"), paste0(getwd(),"/",file.name[i],".zip"))

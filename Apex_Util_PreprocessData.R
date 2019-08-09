@@ -14,12 +14,27 @@ require(geosphere)
 
 preprocess_data = function(date_start,date_end,time_start,time_end,FIPS,frac,chem,hrly_data_loc,site_data_loc,monitor_data_loc,countyFIPS_data_loc,ad,aq,ad_ofpn,aq_ofpn,max_dist){
 #browser()
-## Error handling start ##
-
-#try-catch blocks to:
-#check that date_end > date_start
-  tryCatch(date_end > date_start, error="Please enter an end date that is after your start date.")
-## Error handling end ##
+  ## Error handling start ##
+  
+  #try-catch blocks to:
+  #check that date_end > date_start
+  if(date_end <= date_start) {
+    stop("Please enter an end date that is after your start date.")
+  }
+  #Check that the MaxFrac is a fraction not percent.
+  if(frac>1) {
+    stop("Please enter a MaxFrac value less than or equal to 1.0 ")
+  }
+  #Check that the end date is not past the current date.
+  if(date_end >= Sys.Date()) {
+    stop("Please enter a valid end date.")
+  }
+  #Provide warning if MaxD is too small.
+  if(max_dist<=10000) {
+    warning("Please note that the MaxD should be provided in meters. The distance you provided is less than 10,000m (10km), which may result in missing values unable to be fixed.")
+  }
+  
+  ## Error handling end ##
 
   #=========================================================================================================================================================================================================================================
 ## Script to prepare sites based on distance to study area ##
@@ -30,6 +45,10 @@ sites <- sites[sites$`State Code`>="01" & sites$`State Code`<="56",]            
 sites <- sites[sites$Latitude!=0 & sites$Longitude!=0,]                                     # Sites must have lat and long
 sites$FIPS <- substr(100000+1000*as.numeric(sites$`State Code`)+sites$`County Code`,2,6)    # Create FIPS for all sites
 study_FIPS <- FIPS                                                                          # user provided codes
+
+if((FIPS %in% sites$FIPS)==FALSE) {
+  stop("No sites exist for the given FIPS code(s). Please try a different FIPS code.")
+}
 
 sites <- sites[!is.na(sites$`Site Number`),] #remove all NAs
 
@@ -93,12 +112,16 @@ county_code_data            <- as.data.table(county_code_data_info[,c("County Co
 #browser()
 site_data_by_county         <- inner_join(county_code_data, sites_near, by = c("County Code","State Code"))              #inner join by county and state codes
 #==========================================================================================================================================================================================================================================
-## read in houly data ##
+## read in hourly data ##
 if (length(hrly_data_loc)>1) {
   hrly_data                  <- bind_rows(lapply(hrly_data_loc,fread))
   hrly_data                  <- as.data.table(hrly_data, check.names = FALSE, stringsAsFactors = FALSE)
 } else {
   hrly_data                  <- as.data.table(fread(hrly_data_loc,check.names = FALSE, stringsAsFactors = FALSE))
+}
+
+if(is.na(hrly_data[1,2])==TRUE) {
+  stop("The data chosen has 0 rows. Please choose a file with data. This information is provided under each file on the AQS website")
 }
 #==========================================================================================================================================================================================================================================
 ## filter hourly data further ##
