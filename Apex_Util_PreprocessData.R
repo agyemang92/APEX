@@ -273,7 +273,7 @@ remove_bad_statn = function(i){
   statnDataFrac <- sprintf("%.4f",statnDataFrac) #4 decimal places
   statnDataFrac <<- as.numeric(statnDataFrac) #as numeric
   #browser()
-  if(statnDataFrac < frac){ #if station has enough data...
+  if(statnDataFrac <= frac){ #if station has enough data...
     air_quality_data <<- rbindlist(list(air_quality_data, hrly_data_by_county_chem_date_time_filterByStatn)) #add station data to the end of the air quality data table
     }
 }
