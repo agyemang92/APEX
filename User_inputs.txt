@@ -9,7 +9,8 @@ FIPS-code	"06065"
 FIPS-code	"06071"
 FIPS-code	"06073"
 FIPS-code	"06111"
-Chemical	"Ozone"
+AQS-chem	"Ozone"
+Chemical  "Ozone"
 MaxNAFrac	0.2
 MaxD		30739.303
 MaxCumMiss	4
