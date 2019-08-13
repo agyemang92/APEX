@@ -7,7 +7,7 @@ rm(list=ls())
 
 wd <- read.table("user_cd.txt", stringsAsFactors = FALSE)
 wd <- wd[1,1]
-# wd <- "C:\\Users\\39482\\Documents\\APEX\\APEX-Data-prep\\APEX-Data-FormattR\\APEX-TOOL-Testrun"
+# wd <- "MAC USERS SET WD HERE. Remove the # and run everything below this line. Directory should have \ replaced with /. Keep the directory in quotes."
 setwd(wd)
 
 
