@@ -23,7 +23,7 @@ for (i in 1:length(sheetlist)) {
                                      user.inputs$Value[user.inputs$Variable=="Chemical"], #Return value to user for QA
                                      paste0(user.inputs$Value[user.inputs$Variable=="Start-date"], #Return value to user for QA
                                             " to ", user.inputs$Value[user.inputs$Variable=="End-date"]), #Return value to user for QA
-                                    statnDataFrac, #pull missing data fraction
+                                    allstatnDataFracs$MissingFrac[allstatnDataFracs$Station==sheetlist[i]], #pull missing data fraction
                                     paste(round(station.data.summary[1],4), data_unit, sep = " "), #pull data min
                                     paste(round(station.data.summary[2],4), data_unit, sep = " "), #pull data Q25
                                     paste(round(station.data.summary[3],4), data_unit, sep = " "), #pull data med

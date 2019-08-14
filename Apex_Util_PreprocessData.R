@@ -264,6 +264,7 @@ air_quality_data<- data.table("Parameter Name" = character(),
 stations2 <- unique(hrly_data_by_chem_date_time_county$`Station ID`)
 
 #this function will remove stations with low data from consideration 
+allstatnDataFracs <<- data.frame(Station = rep(NA,length(stations2)), MissingFrac = rep(NA,length(stations2)))
 remove_bad_statn = function(i){
   currentStation                            <- stations2[i]          #current station
   
@@ -271,7 +272,9 @@ remove_bad_statn = function(i){
   #browser()
   statnDataFrac <- (sum(is.na(hrly_data_by_county_chem_date_time_filterByStatn$`Sample Measurement`)))/numMeasurement #compute fraction of missing data 
   statnDataFrac <- sprintf("%.4f",statnDataFrac) #4 decimal places
-  statnDataFrac <<- as.numeric(statnDataFrac) #as numeric
+  statnDataFrac <- as.numeric(statnDataFrac) #as numeric
+  allstatnDataFracs[i,1] <<- stations2[i]
+  allstatnDataFracs[i,2] <<- statnDataFrac
   #browser()
   if(statnDataFrac <= frac){ #if station has enough data...
     air_quality_data <<- rbindlist(list(air_quality_data, hrly_data_by_county_chem_date_time_filterByStatn)) #add station data to the end of the air quality data table
