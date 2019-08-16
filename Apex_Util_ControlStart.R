@@ -7,7 +7,7 @@ rm(list=ls())
 
 wd <- read.table("user_cd.txt", stringsAsFactors = FALSE)
 wd <- wd[1,1]
-# wd <- "MAC USERS SET WD HERE. Remove the # and run everything below this line. Directory should have \ replaced with /. Keep the directory in quotes."
+#wd <- "MAC USERS INPUT WORKING DIRECTORY HERE AND REMOVE LEADING #."
 setwd(wd)
 
 
@@ -59,6 +59,10 @@ if (!require("readr")) {
 if (!require("xlsx")) {
   install.packages("xlsx", repos="http://cran.rstudio.com/")
   library("xlsx")
+}
+if (!require("ggmap")) {
+  install.packages("xlsx", repos="http://cran.rstudio.com/")
+  library("ggmap")
 }
 
 #Import Site and Monitor data from AQS website
