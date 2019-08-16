@@ -13,4 +13,4 @@ AQS-chem	"Ozone"
 Chemical  "Ozone"
 MaxNAFrac	0.2
 MaxD		30739.303
-MaxCumMiss	4
+MaxConsMiss	4

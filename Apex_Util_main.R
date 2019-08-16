@@ -41,7 +41,7 @@ aq_ofpn             <- file.path(getwd(),"Output",aq)          #air quality outp
 
 frac                <- as.numeric(user.inputs$Value[user.inputs$Variable=="MaxNAFrac"])    #acceptable fraction of missing data/Output (a fraction from 0 - 1)
 max_dist            <- as.numeric(user.inputs$Value[user.inputs$Variable=="MaxD"])       #maximum distance (meters) of nearby station(s) to be used.
-thres               <- as.numeric(user.inputs$Value[user.inputs$Variable=="MaxCumMiss"]) #number of consecutive missing hourly data at or below which linear interpolation will be used, and beyond which data from the next nearest station will be used
+thres               <- as.numeric(user.inputs$Value[user.inputs$Variable=="MaxConsMiss"]) #number of consecutive missing hourly data at or below which linear interpolation will be used, and beyond which data from the next nearest station will be used
 
 #################### User inputs end ####################
 
