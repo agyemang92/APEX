@@ -1,4 +1,4 @@
-# This script is a test to see if we can make a flexible map to map the area defined by the user defined FIPS codes.
+# This script makes a flexible map to map the area defined by the user defined FIPS codes.
 
 station_info <- read.csv(site_data_loc)
 # station_info$State.Code <- sprintf("%02d",as.integer(station_info$State.Code))            #fix state code to 2 characters 
@@ -11,12 +11,12 @@ station_info <- station_info[station_info$`Station ID` %in% allstatnDataFracs$St
 bc_bbox <- make_bbox(lat = station_info$Latitude, lon = station_info$Longitude)
 bc_bbox
 
-# grab the maps from google
+# grab the map from google
 site_map <- get_map(location = bc_bbox, source = "google", maptype = "terrain")
-#> Warning: bounding box given to google - spatial extent only approximate.
 
-# plot the points and color them by sector
-pdf(file=paste0(wd,"/Output/Stations_Map.pdf"))
-ggmap(site_map) + 
-  geom_point(data = station_info, aes(x = Longitude, y = Latitude), color = "red", size = 1.5)
+#create and save the map
+pdf(file=paste0(wd,"/Output/", "Stations_Map_", user.inputs$Value[user.inputs$Variable=="Chemical"], "_",
+                                             user.inputs$Value[user.inputs$Variable=="data-year"],".pdf"))
+map <- ggmap(site_map) + geom_point(data = station_info, aes(x = Longitude, y = Latitude), color = "red", size = 1.5)
+print(map)
 dev.off()

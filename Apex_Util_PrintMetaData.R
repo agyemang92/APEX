@@ -31,7 +31,7 @@ for (i in 1:length(sheetlist)) {
                                     paste(round(station.data.summary[5],4), data_unit, sep = " "), #pull data Q75
                                     paste(round(station.data.summary[6],4), data_unit, sep = " ")  #pull data max
                                     ))
-  write.xlsx(meta.data, file = paste0(wd,"/meta_data_",user.inputs$Value[user.inputs$Variable=="Chemical"], "_",
+  write.xlsx(meta.data, file = paste0(wd,"/Output/meta_data_",user.inputs$Value[user.inputs$Variable=="Chemical"], "_",
                                       user.inputs$Value[user.inputs$Variable=="data-year"], ".xlsx"),
              sheetName = paste0("Station-",loop.station), append = TRUE)
 }
