@@ -1,19 +1,19 @@
 @ECHO OFF
-Title: Welcome to the APEX FormattR!
+Title: Let's get your AQS data ready for APEX!
 
-echo "Input the file path to R.exe on your computer. To paste into the line right click and select 'paste'."
-set /p r_loc="Where is your R program located?"
+echo "Input the file path to R.exe on your computer. If you're unable to use ctrl+v to paste, right click and select 'paste'."
+set /p r_loc="Where is your R program located?  "
 set r_loc_use="%r_loc%\R.exe"
 
-set /p script_loc="Next, where is the script?"
+set /p script_loc="Next, where is the script?  "
 set script_loc_use="%script_loc%\Apex_Util_ControlStart.R"
 cd /d %script_loc%
 echo %script_loc%>user_cd.txt
 
-REM set /p user_cd="Where should we print the output files?"
+REM set /p user_cd="Where should we print the output files?  "
 REM cd /d %user_cd%
 
-set /p log_loc="Finally, where should the record of the R log be printed?"
+set /p log_loc="Finally, where should the record of the R log be printed?  "
 set log_loc_use="%log_loc%\Rsession_run_log.Rout"
 
 echo "Now, we'll open a text file for you to input the script parameters. Be sure to save it with your desired inputs."
