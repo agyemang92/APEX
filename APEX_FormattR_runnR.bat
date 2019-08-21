@@ -26,7 +26,7 @@ Echo "Fetching and formatting the data."
 
 %r_loc_use% CMD BATCH %script_loc_use% %log_loc_use%
 
-echo "Run complete! Please review the meta data file to be sure the data is acceptable before using in the APEX model."
+echo "Run complete! Please review the meta data file to be sure the data is acceptable before using in the APEX model. If the output folder is empty please consult the Rsession_run_log to determine the error."
 
 CMD /k
 
