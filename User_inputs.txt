@@ -1,7 +1,5 @@
 Variable		Value
 
-file-name-time		"hourly"
-
 data-year		2011
 
 Start-date		"2011-01-01"
@@ -14,7 +12,7 @@ AQS_Chem		"Ozone"
 
 Chemical		"Ozone"
 
-MaxFrac			0.2
+MaxNAFrac		0.2
 
 MaxD			50000
 

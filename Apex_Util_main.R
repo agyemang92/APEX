@@ -29,7 +29,7 @@ site_data_loc        <- file.path(getwd(),"aqs_sites.csv")           # location 
 ## output file location ##
 if(!file.exists(file.path(getwd(),"Output"))){dir.create(file.path(getwd(),"Output"))}   # create output directory if it doesn't exist
 
-frac                <- as.numeric(user.inputs$Value[user.inputs$Variable=="MaxFrac"])     # acceptable fraction of missing data/Output (range 0 - 1)
+frac                <- as.numeric(user.inputs$Value[user.inputs$Variable=="MaxNAFrac"])     # acceptable fraction of missing data/Output (range 0 - 1)
 max_dist            <- as.numeric(user.inputs$Value[user.inputs$Variable=="MaxD"])        # maximum distance (meters) of nearby station(s) to be used.
 thres               <- as.numeric(user.inputs$Value[user.inputs$Variable=="MaxConsMiss"]) # max number of consecutive missing hours for linear interpolation
 decimals            <- as.numeric(user.inputs$Value[user.inputs$Variable=="Decimals"])    # number of decimal places on AQ output file  
