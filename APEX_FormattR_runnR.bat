@@ -1,11 +1,11 @@
 @ECHO OFF
 Title: Let's get your AQS data ready for APEX!
 
-echo "Input the file path to R.exe on your computer. If you're unable to use ctrl+v to paste, right click and select 'paste'."
+echo Input the file path to R.exe on your computer. If you're unable to use ctrl+v to paste, right click and select 'paste'.
 set /p r_loc="Where is your R program located?  "
 set r_loc_use="%r_loc%\R.exe"
 
-set /p script_loc="Next, where is the script?  "
+set /p script_loc="Next, where is the script? " 
 set script_loc_use="%script_loc%\Apex_Util_ControlStart.R"
 cd /d %script_loc%
 echo %script_loc%>user_cd.txt
@@ -16,17 +16,17 @@ REM cd /d %user_cd%
 set /p log_loc="Finally, where should the record of the R log be printed?  "
 set log_loc_use="%log_loc%\Rsession_run_log.Rout"
 
-echo "Now, we'll open a text file for you to input the script parameters. Be sure to save it with your desired inputs."
+echo Now, we'll open a text file for you to input the script parameters. Be sure to save it with your desired inputs.
 
 start notepad "User_inputs.txt"
 
 PAUSE
 
-Echo "Fetching and formatting the data."
+Echo Fetching and formatting the data.
 
 %r_loc_use% CMD BATCH %script_loc_use% %log_loc_use%
 
-echo "Run complete! Please review the meta data file to be sure the data is acceptable before using in the APEX model. If the output folder is empty please consult the Rsession_run_log to determine the error."
+echo Run complete! Please review the meta data file to be sure the data is acceptable before using in the APEX model. If the output folder is empty please consult the Rsession_run_log to determine the error.
 
 CMD /k
 

@@ -56,17 +56,6 @@ if (user.inputs$Value[user.inputs$Variable == "New-sites"] == "No") {
     unzip('aqs_sites.zip')
 }
 
-if (user.inputs$Value[user.inputs$Variable == "New-sites"] == "No") {
-  if (!file.exists(paste0(wd,"/aqs_monitors.csv"))) {
-   if (!file.exists(paste0(wd,"/aqs_monitors.zip"))) {
-      download.file(paste0("https://aqs.epa.gov/aqsweb/airdata/aqs_monitors.zip"), paste0(getwd(),"/aqs_monitors.zip"))
-    } 
-   unzip('aqs_monitors.zip')
-  }} else {
-    download.file(paste0("https://aqs.epa.gov/aqsweb/airdata/aqs_monitors.zip"), paste0(getwd(),"/aqs_monitors.zip"))
-    unzip('aqs_monitors.zip')
-}
-
 #Create AQS file name from User inputs
 file.name <- paste("hourly",
                        criteria_gas_numbers$chemcode[criteria_gas_numbers$AQSchem 
