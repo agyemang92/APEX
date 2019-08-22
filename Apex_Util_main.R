@@ -33,7 +33,7 @@ frac                <- as.numeric(user.inputs$Value[user.inputs$Variable=="MaxNA
 max_dist            <- as.numeric(user.inputs$Value[user.inputs$Variable=="MaxD"])        # maximum distance (meters) of nearby station(s) to be used.
 thres               <- as.numeric(user.inputs$Value[user.inputs$Variable=="MaxConsMiss"]) # max number of consecutive missing hours for linear interpolation
 decimals            <- as.numeric(user.inputs$Value[user.inputs$Variable=="Decimals"])    # number of decimal places on AQ output file  
-if (!is.integer(get0("decimals"))) decimals <- 4                                          # default value if decimals not given
+if ((decimals %% 1)!=0 | decimals < 0) decimals <- 4                                          # default value if decimals not given
 study_area         <<- as.character(user.inputs$Value[user.inputs$Variable=="Location"])
 
 #################### User inputs end ####################
