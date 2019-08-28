@@ -1,14 +1,27 @@
 Variable		Value
+
 data-year		2011
+
 Start-date		"2011-01-01"
+
 End-date		"2011-12-31"
+
 FIPS-code		"06037"
+
 AQS_Chem		"Ozone"
+
 Chemical		"Ozone"
+
 MaxNAFrac		0.2
+
 MaxD			50000
+
 MaxConsMiss		6
+
 Decimals		3
+
 Location		"Los Angeles"
+
 New-sites		No
+
 New-monitors		No

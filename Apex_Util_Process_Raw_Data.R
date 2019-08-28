@@ -23,7 +23,7 @@ preprocess_data = function(date_start,date_end,time_start,time_end,FIPS,frac,che
     stop("Please enter a valid end date.")
   }
   #Provide warning if MaxD is too small.
-  if(max_dist<=10000) {
+  if(max_dist<10000) {
     warning("Please note that the MaxD should be provided in meters. The distance you provided is less than 10,000m (10km), which may result in missing values unable to be fixed.")
   }
   
