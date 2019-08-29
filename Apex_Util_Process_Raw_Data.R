@@ -146,7 +146,7 @@ preprocess_data = function(date_start,date_end,time_start,time_end,FIPS,frac,che
   stations1 <- stations_all[hr_missing<= hr_cutoff]                         # remove stations with too much missing data from list
   stations_good <<- stations1[stations1 %in% study$`Station ID`]            # remove stations outside core counties from list
   if (length(stations_good)==0) {
-    stop ("No stations meet selection criteria")
+    stop ("No stations meet selection criteria. Please select a different county or allow for more more missing data to be acceptable.")
   }
   hrs_missing   <<- hr_missing[stations_all %in% stations_good]             # number of missing hours at each good station
 
