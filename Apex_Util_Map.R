@@ -29,7 +29,7 @@ map <- ggmap(site_map, legend = "bottom")+
                                       y = as.numeric(Latitude)), color = "red", size = 2) + 
   ggtitle(paste0(user.inputs$Value[user.inputs$Variable=="data-year"]," ", 
                  study_area, " Study Area"), 
-          subtitle = paste0("*Air quality sites for ", tolower(user.inputs$Value[user.inputs$Variable=="Chemical"]),
-                            " marked in red.*")) 
+          subtitle = paste0("Air quality sites for ", tolower(user.inputs$Value[user.inputs$Variable=="Chemical"]),
+                            " marked in red.")) 
 print(map)
 dev.off()
