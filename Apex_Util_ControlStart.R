@@ -32,6 +32,10 @@ if (!require("ggmap")) {
   install.packages("ggmap", repos="http://cran.rstudio.com/")
   library("ggmap")
 }
+if (!require("ggsn")) {
+  install.packages("ggsn", repos="http://cran.rstudio.com/")
+  library("ggsn")
+}
 
 #Define list of chemicals with AQS chemical code
 criteria_gas_numbers <- data.frame(AQSchem = c("Ozone", "SO2", "CO", "NO2", 
