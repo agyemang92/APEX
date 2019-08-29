@@ -24,7 +24,7 @@ pdf(file=paste0(wd,"/Output/", "AQ_", "Stations_Map_", user.inputs$Value[user.in
                 user.inputs$Value[user.inputs$Variable=="data-year"], "_", study_area,".pdf"))
 map <- ggmap(site_map, legend = "bottom")+ 
   scalebar(x.min = sac_borders[[3]]-1, x.max = sac_borders[[4]]+1,y.min = sac_borders[[1]]-1, y.max = sac_borders[[2]]+1,transform = TRUE,
-           dist = 20,dist_unit = "km",model = "WGS84",anchor = c(x=sac_borders[[3]]+1,y=sac_borders[[1]]+0.5), st.size = 2)+
+           dist = 20,dist_unit = "km",model = "WGS84",anchor = c(x=sac_borders[[3]]+0.6,y=sac_borders[[1]]+0.25), st.size = 1.75)+
   geom_point(data = graphingdata, aes(x = as.numeric(Longitude), 
                                       y = as.numeric(Latitude)), color = "red", size = 2) + 
   ggtitle(paste0(user.inputs$Value[user.inputs$Variable=="data-year"]," ", 
