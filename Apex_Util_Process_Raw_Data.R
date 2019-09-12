@@ -53,7 +53,7 @@ preprocess_data = function(date_start,date_end,time_start,time_end,FIPS,frac,che
   # create matrix of distances
   d <- as.data.table(distm(cbind(sites$Longitude,sites$Latitude),cbind(study$Longitude,study$Latitude)),stringsAsFactors=F,check.names=F)   
   colnames(d) <- as.character(study$`Station ID`) 
-  cutoff      <- min(300000,3*max_dist)             #  maximum distance of area that will be considered. No more than 300km 
+  cutoff      <- min(200000,2*max_dist)             #  maximum distance of area that will be considered. No more than 300km 
   d_min       <- as.list(lapply(transpose(d),min))
   sites_near  <<- sites[d_min<=cutoff]
   site_names  <- sites_near$`Station ID`

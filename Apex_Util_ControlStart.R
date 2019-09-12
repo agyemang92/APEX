@@ -10,32 +10,13 @@ wd <- wd[1,1]
 #wd <- "MAC USERS INPUT WORKING DIRECTORY HERE AND REMOVE LEADING #."
 setwd(wd)
 
-
-#Install and load needed packages
-if (!require("geosphere")) {
-  install.packages("geosphere", repos="http://cran.rstudio.com/")
-  library("geosphere")
-}
-if (!require("dplyr")) {
-  install.packages("dplyr", repos="http://cran.rstudio.com/")
-  library("dplyr")
-}
-if (!require("sqldf")) {
-  install.packages("sqldf", repos="http://cran.rstudio.com/")
-  library("sqldf")
-}
-if (!require("data.table")) {
-  install.packages("data.table", repos="http://cran.rstudio.com/")
-  library("data.table")
-}
-if (!require("ggmap")) {
-  install.packages("ggmap", repos="http://cran.rstudio.com/")
-  library("ggmap")
-}
-if (!require("ggsn")) {
-  install.packages("ggsn", repos="http://cran.rstudio.com/")
-  library("ggsn")
-}
+#The packages used in this program are pulled from the working directory rather than downloaded globally.
+library("geosphere", lib.loc=file.path(wd,"Library"))
+library("dplyr", lib.loc=file.path(wd,"Library"))
+library("sqldf", lib.loc=file.path(wd,"Library"))
+library("data.table", lib.loc=file.path(wd,"Library"))
+library("ggmap", lib.loc=file.path(wd,"Library"))
+library("ggsn", lib.loc=file.path(wd,"Library"))
 
 #Define list of chemicals with AQS chemical code
 criteria_gas_numbers <- data.frame(AQSchem = c("Ozone", "SO2", "CO", "NO2", 
